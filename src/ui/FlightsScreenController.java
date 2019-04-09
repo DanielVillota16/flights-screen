@@ -10,16 +10,19 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -30,12 +33,16 @@ import model.Time;
 public class FlightsScreenController {
 	
 	private Screen screen;
-	
-    @FXML
-    private MenuButton searchBy;
-
-    @FXML
     private TableView<Flight> flightsList;
+    private ObservableList<Flight> data;
+    
+    public final static int ROWS_PER_PAGE = 10;
+	
+	@FXML
+    private Pagination pagination;
+	
+	@FXML
+    private MenuButton searchBy;
 
     @FXML
     private TextField flightToSearch;
@@ -45,15 +52,41 @@ public class FlightsScreenController {
 
 	@FXML
     public void initialize() {
-    	
+		flightsList = new TableView<Flight>();
+		data = FXCollections.observableArrayList();
+		setColumns();
+		pagination.setMaxWidth(600);
+		flightToSearch.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				flightToSearch.setText("");
+				flightToSearch.setStyle("-fx-text-inner-color: black;");
+			}
+		});
+		
+    }
+    
+    public void refreshTable() {
+    	flightsList.getItems().clear();
+    	data.clear();
+    	data.addAll(screen.getFlights());
+    	flightsList.setItems(data);
+    	flightsList.refresh();
+		pagination.setPageFactory(this::createPage);    
+    }
+    
+    private Node createPage(int pageIndex) {
+       	if(pagination.getCurrentPageIndex() <= data.size()/ROWS_PER_PAGE){
+       		int fromIndex = pageIndex * ROWS_PER_PAGE;
+            int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, data.size());
+            flightsList.setItems(FXCollections.observableArrayList(data.subList(fromIndex, toIndex)));
+            return flightsList;
+       	}
+        return null;
     }
     
     @SuppressWarnings("unchecked")
-	public void refreshTable() {
-    	flightsList.getColumns().clear();
-    	ObservableList<Flight> data = FXCollections.observableArrayList();
-    	data.addAll(screen.getFlights());
-        
+	public void setColumns(){
     	TableColumn<Flight, Date> dates = new TableColumn<Flight, Date>("Date");
         dates.setMinWidth(100);
         dates.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -78,17 +111,9 @@ public class FlightsScreenController {
         gates.setMinWidth(100);
         gates.setCellValueFactory(new PropertyValueFactory<>("gate"));
         
-        flightsList.setItems(data);
         flightsList.getColumns().addAll(dates, departureTimes, airlines, codes, destinations, gates);
     }
     
-    public void refreshAfterSort() {
-    	flightsList.getItems().clear();
-    	ObservableList<Flight> data = FXCollections.observableArrayList();
-    	data.addAll(screen.getFlights());
-    	flightsList.setItems(data);
-    	flightsList.refresh();
-    }
     
     @FXML
     void generateRandomFlights(ActionEvent event) {
@@ -118,7 +143,7 @@ public class FlightsScreenController {
 		int index = -1;
 		try {
 			if(searchBy.getUserData().equals("airline")) {
-	    		index = screen.searchFlightByAirline(flightToSearch.getText());    		
+	    		index = screen.searchFlightByAirline(flightToSearch.getText());
 	    	} else if(searchBy.getUserData().equals("code")) {	
 	    		index = screen.searchFlightByCode(Integer.parseInt(flightToSearch.getText()));
 	    	} else if(searchBy.getUserData().equals("date")) {
@@ -199,68 +224,80 @@ public class FlightsScreenController {
     @FXML
     void searchByAirline(ActionEvent event) {
     	searchBy.setUserData("airline");
+    	flightToSearch.setText("Airline");
+    	flightToSearch.setStyle("-fx-text-inner-color: gray;");
     }
 
     @FXML
     void searchByDate(ActionEvent event) {
     	searchBy.setUserData("date");
+    	flightToSearch.setText("Date");
+    	flightToSearch.setStyle("-fx-text-inner-color: gray;");
     }
 
     @FXML
     void searchByDestination(ActionEvent event) {
     	searchBy.setUserData("destination");
+    	flightToSearch.setText("Destination");
+    	flightToSearch.setStyle("-fx-text-inner-color: gray;");
     }
 
     @FXML
     void searchByFlightCode(ActionEvent event) {
     	searchBy.setUserData("code");
+    	flightToSearch.setText("Code");
+    	flightToSearch.setStyle("-fx-text-inner-color: gray;");
     }
 
     @FXML
     void searchByGate(ActionEvent event) {
     	searchBy.setUserData("gate");
+    	flightToSearch.setText("Gate");
+    	flightToSearch.setStyle("-fx-text-inner-color: gray;");
     }
 
     @FXML
     void searchByTime(ActionEvent event) {
     	searchBy.setUserData("time");
+    	flightToSearch.setText("Time");
+    	flightToSearch.setStyle("-fx-text-inner-color: gray;");
     }
 
 
     @FXML
     void sortByDate(ActionEvent event) {
     	screen.sortByDate();
-    	refreshAfterSort();
+    	refreshTable();
     }
     
     @FXML
     void sortByAirline(ActionEvent event) {
     	screen.sortByAirline();
-    	refreshAfterSort();
+    	refreshTable();
     }
 
     @FXML
     void sortByDestination(ActionEvent event) {
     	screen.sortByDestination();
-    	refreshAfterSort();
+    	refreshTable();
     }
 
     @FXML
     void sortByFlightCode(ActionEvent event) {
     	screen.sortByCode();
-    	refreshAfterSort();
+    	refreshTable();
     }
 
     @FXML
     void sortByGate(ActionEvent event) {
     	screen.sortByGate();
-    	refreshAfterSort();
+    	refreshTable();
     }
 
     @FXML
     void sortByTime(ActionEvent event) {
     	screen.sortByDepartureTime();
-    	refreshAfterSort();
+    	refreshTable();
     }
 
 }
