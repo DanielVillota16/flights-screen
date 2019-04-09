@@ -12,10 +12,6 @@ public class Time implements Comparable<Time> {
 		this.dayTime = dayTime;
 	}
 	
-	/**
-	 * 
-	 * @param time
-	 */
 	@Override
 	public int compareTo(Time time) {
 		int value = 0;
@@ -53,10 +49,6 @@ public class Time implements Comparable<Time> {
 		return this.hour;
 	}
 
-	/**
-	 * 
-	 * @param hour
-	 */
 	public void setHour(int hour) {
 		this.hour = hour;
 	}
@@ -65,10 +57,6 @@ public class Time implements Comparable<Time> {
 		return this.minutes;
 	}
 
-	/**
-	 * 
-	 * @param minutes
-	 */
 	public void setMinutes(int minutes) {
 		this.minutes = minutes;
 	}
@@ -77,10 +65,6 @@ public class Time implements Comparable<Time> {
 		return this.dayTime;
 	}
 
-	/**
-	 * 
-	 * @param dayTime
-	 */
 	public void setDayTime(String dayTime) {
 		this.dayTime = dayTime;
 	}

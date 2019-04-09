@@ -22,10 +22,6 @@ public class Screen {
 		return flights;
 	}
 
-	/**
-	 * 
-	 * @param flights
-	 */
 	public void setFlights(Flight[] flights) {
 		this.flights = flights;
 	}
@@ -89,10 +85,6 @@ public class Screen {
 		Arrays.sort(flights, fdc);
 	}
 
-	/**
-	 * 
-	 * @param code
-	 */
 	public int searchFlightByCode(int code) {
 		// TODO Use linear search to find the specified flight with the correspondant code
 		int index = -1;
@@ -104,10 +96,6 @@ public class Screen {
 		return index;
 	}
 
-	/**
-	 * 
-	 * @param alName
-	 */
 	public int searchFlightByAirline(String airline) {
 		// TODO Use binary search to find the index of the correspondent flight in the array
 		sortByAirline();
@@ -128,10 +116,6 @@ public class Screen {
 		return index;
 	}
 
-	/**
-	 * 
-	 * @param gate
-	 */
 	public int searchFlightByGate(int gate) {
 		int index = -1;
 		for (int i = 0; i < flights.length && index == -1; i++) {
@@ -142,10 +126,6 @@ public class Screen {
 		return index;
 	}
 
-	/**
-	 * 
-	 * @param destination
-	 */
 	public int searchFlightByDestination(String destination) {
 		sortByDestination();
 		int index = -1;
@@ -165,10 +145,6 @@ public class Screen {
 		return index;
 	}
 
-	/**
-	 * 
-	 * @param date
-	 */
 	public int searchFlightByDate(String date) {
 		int index = -1;
 		for (int i = 0; i < flights.length && index == -1; i++) {

@@ -22,10 +22,6 @@ public class Flight implements Comparable<Flight>{
 		return departureTime;
 	}
 
-	/**
-	 * 
-	 * @param departureTime
-	 */
 	public void setDepartureTime(Time departureTime) {
 		this.departureTime = departureTime;
 	}
@@ -34,10 +30,6 @@ public class Flight implements Comparable<Flight>{
 		return this.code;
 	}
 
-	/**
-	 * 
-	 * @param code
-	 */
 	public void setCode(int code) {
 		this.code = code;
 	}
@@ -46,10 +38,6 @@ public class Flight implements Comparable<Flight>{
 		return this.airline;
 	}
 
-	/**
-	 * 
-	 * @param airline
-	 */
 	public void setAirline(String airline) {
 		this.airline = airline;
 	}
@@ -58,10 +46,6 @@ public class Flight implements Comparable<Flight>{
 		return this.destination;
 	}
 
-	/**
-	 * 
-	 * @param destination
-	 */
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
@@ -70,10 +54,6 @@ public class Flight implements Comparable<Flight>{
 		return this.gate;
 	}
 
-	/**
-	 * 
-	 * @param gate
-	 */
 	public void setGate(int gate) {
 		this.gate = gate;
 	}
