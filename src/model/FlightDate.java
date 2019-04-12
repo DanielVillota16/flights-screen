@@ -6,8 +6,11 @@ public class FlightDate extends Date {
 
 	private static final long serialVersionUID = 1L;
 	
+	private long dateMillis;
+	
 	public FlightDate(long fDate) {
 		super(fDate);
+		this.dateMillis = fDate;
 	}
 	
 	@Override
@@ -18,6 +21,10 @@ public class FlightDate extends Date {
 	
 	public boolean equals(FlightDate date) {
 		return date.toString().equals(toString());
+	}
+	
+	public long getDateMillis() {
+		return dateMillis;
 	}
 	
 }
